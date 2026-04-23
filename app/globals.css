@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand: #16a37f;
+    --brand-dim: #0d7a5f;
+    --brand-pale: #f0fdf9;
+  }
+
+  * { -webkit-font-smoothing: antialiased; }
+
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-200 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-300; }
+}
+
+@layer components {
+  .sidebar-item {
+    @apply flex items-center gap-2 px-4 py-2 text-[#7fa89e] text-[13px] font-normal
+           border-l-2 border-transparent cursor-pointer transition-all duration-100
+           hover:text-[#e8f5f1] hover:bg-white/[0.04];
+  }
+  .sidebar-item.active {
+    @apply text-[#e8f5f1] bg-brand-500/[0.14] border-l-brand-500 font-medium;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-1.5 px-3.5 h-[34px] bg-brand-500 text-white
+           text-[12.5px] font-medium rounded-md cursor-pointer border-none
+           transition-all duration-100 hover:bg-brand-600 whitespace-nowrap flex-shrink-0;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-1.5 px-3.5 h-[34px] bg-white text-gray-600
+           text-[12.5px] font-medium rounded-md cursor-pointer border border-gray-200
+           transition-all duration-100 hover:bg-gray-50 hover:text-gray-900 whitespace-nowrap;
+  }
+  .input-base {
+    @apply w-full bg-gray-50 border border-gray-200 rounded-md px-2.5 py-2
+           text-[13px] text-gray-900 outline-none font-sans
+           focus:border-brand-500 focus:bg-white focus:ring-2 focus:ring-brand-500/[0.15]
+           transition-all duration-100;
+  }
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl shadow-sm;
+  }
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-[10.5px] font-semibold;
+  }
+}
