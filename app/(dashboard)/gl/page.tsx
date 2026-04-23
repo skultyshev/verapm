@@ -15,7 +15,7 @@ export default async function GLPage() {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) redirect('/login')
 
-  const [{ data: entries }, { data: accounts }] = await Promise.all([
+  const [{ data: entriesRaw }, { data: accounts }] = await Promise.all([
     supabase
       .from('journal_entries')
       .select(`
@@ -36,9 +36,11 @@ export default async function GLPage() {
       .order('account_number'),
   ])
 
+  const entries = (entriesRaw as any[]) ?? []
+
   // Compute account balances from all lines
   const balances: Record<string, number> = {}
-  entries?.forEach(je => {
+  entries.forEach(je => {
     if (!je.is_posted) return
     je.lines?.forEach((l: any) => {
       const acc = l.account
@@ -51,10 +53,10 @@ export default async function GLPage() {
     })
   })
 
-  const totalDr = entries?.reduce((s, je) =>
-    s + (je.lines?.reduce((ls: number, l: any) => ls + Number(l.debit), 0) || 0), 0) || 0
-  const totalCr = entries?.reduce((s, je) =>
-    s + (je.lines?.reduce((ls: number, l: any) => ls + Number(l.credit), 0) || 0), 0) || 0
+  const totalDr = entries.reduce((s: number, je: any) =>
+    s + (je.lines?.reduce((ls: number, l: any) => ls + Number(l.debit), 0) || 0), 0)
+  const totalCr = entries.reduce((s: number, je: any) =>
+    s + (je.lines?.reduce((ls: number, l: any) => ls + Number(l.credit), 0) || 0), 0)
 
   const fm = (v: number) => '$' + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
@@ -63,7 +65,7 @@ export default async function GLPage() {
       <div className="bg-white border-b border-gray-200 px-6 h-14 flex items-center justify-between flex-shrink-0">
         <div>
           <div className="text-[15px] font-semibold tracking-tight">General Ledger</div>
-          <div className="text-[11px] text-gray-400 mt-0.5">{entries?.length || 0} entries · {accounts?.length || 0} accounts</div>
+          <div className="text-[11px] text-gray-400 mt-0.5">{entries.length} entries · {accounts?.length || 0} accounts</div>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/gl?tab=coa" className="inline-flex items-center gap-1.5 px-3.5 h-[34px] rounded-md text-[12.5px] font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all bg-white">
@@ -84,8 +86,8 @@ export default async function GLPage() {
         {/* Account balances by type */}
         <div className="grid grid-cols-5 gap-3">
           {(['asset','liability','equity','revenue','expense'] as const).map(type => {
-            const typeAccs = accounts?.filter(a => a.type === type) || []
-            const total = typeAccs.reduce((s, a) => s + (balances[a.id] || 0), 0)
+            const typeAccs = accounts?.filter((a: any) => a.type === type) || []
+            const total = typeAccs.reduce((s: number, a: any) => s + (balances[a.id] || 0), 0)
             const ts = TYPE_STYLE[type]
             return (
               <div key={type} className="card p-4">
@@ -102,7 +104,8 @@ export default async function GLPage() {
           <div className="px-4 py-3 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-[0.5px] text-gray-400">Journal Entries</span>
             <span className="text-[11px] font-mono text-gray-400">
-              Dr: {fm(totalDr)} · Cr: {fm(totalCr)} · {Math.abs(totalDr - totalCr) < 0.01
+              Dr: {fm(totalDr)} · Cr: {fm(totalCr)} ·{' '}
+              {Math.abs(totalDr - totalCr) < 0.01
                 ? <span className="text-green-600">✓ Balanced</span>
                 : <span className="text-red-600">⚠ Off</span>}
             </span>
@@ -116,7 +119,7 @@ export default async function GLPage() {
               </tr>
             </thead>
             <tbody>
-              {entries?.map(je => {
+              {entries.map((je: any) => {
                 const dr  = je.lines?.reduce((s: number, l: any) => s + Number(l.debit), 0) || 0
                 const cr  = je.lines?.reduce((s: number, l: any) => s + Number(l.credit), 0) || 0
                 const bal = Math.abs(dr - cr) < 0.01
@@ -150,8 +153,13 @@ export default async function GLPage() {
                   </tr>
                 )
               })}
-              {(!entries || entries.length === 0) && (
-                <tr><td colSpan={8} className="px-4 py-12 text-center text-[12px] text-gray-400">No journal entries yet. <Link href="/gl/new-entry" className="text-brand-500 hover:underline">Create your first entry →</Link></td></tr>
+              {entries.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="px-4 py-12 text-center text-[12px] text-gray-400">
+                    No journal entries yet.{' '}
+                    <Link href="/gl/new-entry" className="underline">Create your first entry →</Link>
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
