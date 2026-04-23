@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import type { Database } from './types'
 
 // Server client — only use inside Server Components and Route Handlers
-export const createServer = () => {
+export const createServerClient = () => {
   const cookieStore = cookies()
 
   return createServerClient<Database>(
