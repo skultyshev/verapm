@@ -40,7 +40,7 @@ export default async function TenantsPage() {
       <div className="bg-white border-b border-gray-200 px-6 h-14 flex items-center justify-between flex-shrink-0">
         <div>
           <div className="text-[15px] font-semibold tracking-tight">Tenants</div>
-          <div className="text-[11px] text-gray-400 mt-0.5">{leases?.length || 0} active leases · {expiring} expiring within 60 days</div>
+          <div className="text-[11px] text-gray-400 mt-0.5">{(leases as any[])?.length || 0} active leases · {expiring} expiring within 60 days</div>
         </div>
         <Link href="/tenants/new"
               className="inline-flex items-center gap-1.5 px-3.5 h-[34px] rounded-md text-[12.5px] font-medium text-white"

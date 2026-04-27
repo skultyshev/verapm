@@ -35,7 +35,7 @@ export default async function PropertiesPage() {
       <div className="bg-white border-b border-gray-200 px-6 h-14 flex items-center justify-between flex-shrink-0">
         <div>
           <div className="text-[15px] font-semibold tracking-tight">Properties</div>
-          <div className="text-[11px] text-gray-400 mt-0.5">{properties?.length || 0} properties · {stats?.totalUnits || 0} units</div>
+          <div className="text-[11px] text-gray-400 mt-0.5">{(properties as any[])?.length || 0} properties · {stats?.totalUnits || 0} units</div>
         </div>
         <Link href="/properties/new"
               className="inline-flex items-center gap-1.5 px-3.5 h-[34px] rounded-md text-[12.5px] font-medium text-white transition-all"
@@ -47,7 +47,7 @@ export default async function PropertiesPage() {
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {/* Stats */}
         <div className="grid grid-cols-4 gap-3">
-          <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Properties</div><div className="text-[22px] font-bold">{properties?.length || 0}</div></div>
+          <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Properties</div><div className="text-[22px] font-bold">{(properties as any[])?.length || 0}</div></div>
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Total Units</div><div className="text-[22px] font-bold">{stats?.totalUnits || 0}</div><div className="text-[10px] text-gray-400 mt-0.5">{(stats?.totalUnits||0)-(stats?.occupied||0)} vacant</div></div>
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Occupancy</div><div className="text-[22px] font-bold">{occupancyPct}%</div><div className="h-1 bg-gray-100 rounded-full overflow-hidden mt-1.5"><div className="h-full rounded-full" style={{ width: `${occupancyPct}%`, background: '#16a37f' }}/></div></div>
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Monthly Rent</div><div className="text-[20px] font-bold">${(stats?.monthlyRent||0).toLocaleString()}</div><div className="text-[10px] text-gray-400 mt-0.5">Occupied units</div></div>

@@ -63,7 +63,7 @@ export default async function PaymentsPage() {
         {/* Stats */}
         <div className="grid grid-cols-4 gap-3">
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Expected</div><div className="text-[20px] font-bold">${totalExpected.toLocaleString()}</div><div className="text-[10px] text-gray-400 mt-0.5">This month</div></div>
-          <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Collected</div><div className="text-[20px] font-bold" style={{ color: '#15803d' }}>${totalCollected.toLocaleString()}</div><div className="text-[10px] text-gray-400 mt-0.5">{payments?.filter(p=>p.type==='rent').length || 0} payments</div></div>
+          <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Collected</div><div className="text-[20px] font-bold" style={{ color: '#15803d' }}>${totalCollected.toLocaleString()}</div><div className="text-[10px] text-gray-400 mt-0.5">{(payments as any[])?.filter(p=>p.type==='rent').length || 0} payments</div></div>
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Outstanding</div><div className="text-[20px] font-bold" style={{ color: '#d97706' }}>${Math.max(0, totalExpected-totalCollected).toLocaleString()}</div></div>
           <div className="card p-4"><div className="text-[10px] font-semibold uppercase tracking-[0.4px] text-gray-400 mb-1.5">Collection Rate</div><div className="text-[20px] font-bold">{collectionRate}%</div><div className="h-1.5 bg-gray-100 rounded-full overflow-hidden mt-1.5"><div className="h-full rounded-full" style={{ width:`${collectionRate}%`, background: collectionRate>=80?'#16a37f':collectionRate>=50?'#d97706':'#dc2626' }}/></div></div>
         </div>
@@ -72,7 +72,7 @@ export default async function PaymentsPage() {
         <div className="card overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-100 bg-gray-50 flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-[0.5px] text-gray-400">Payment History</span>
-            <span className="text-[11px] text-gray-400 font-mono">{payments?.length || 0} transactions</span>
+            <span className="text-[11px] text-gray-400 font-mono">{(payments as any[])?.length || 0} transactions</span>
           </div>
           <table className="w-full border-collapse">
             <thead>

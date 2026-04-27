@@ -37,12 +37,12 @@ export default async function DashboardPage() {
       .limit(5),
   ])
 
-  const occupiedCount = (unitCount || 0) - (vacantUnits?.length || 0)
+  const occupiedCount = (unitCount || 0) - ((vacantUnits as any[])?.length || 0)
   const occupancyPct  = unitCount ? Math.round((occupiedCount / unitCount) * 100) : 0
 
   const stats = [
     { label: 'Properties',    value: propCount || 0,    sub: 'In portfolio' },
-    { label: 'Total Units',   value: unitCount || 0,    sub: `${vacantUnits?.length || 0} vacant` },
+    { label: 'Total Units',   value: unitCount || 0,    sub: `${(vacantUnits as any[])?.length || 0} vacant` },
     { label: 'Occupancy',     value: `${occupancyPct}%`, sub: `${occupiedCount} occupied` },
     { label: 'Open Tickets',  value: openTickets || 0,   sub: 'Maintenance', accent: (openTickets || 0) > 0 ? '#dc2626' : undefined },
   ]
