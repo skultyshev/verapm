@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         }}>
                     <item.icon size={14} className={isActive ? 'opacity-100' : 'opacity-65'} />
                     <span>{item.label}</span>
-                    {item.badge === 'urgent' && (
+                    {(item as any).badge === 'urgent' && (
                       <span className="ml-auto text-[10px] font-semibold px-1.5 py-px rounded-full font-mono"
                             style={{ background: '#dc2626', color: 'white' }}>!</span>
                     )}
