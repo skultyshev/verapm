@@ -15,7 +15,7 @@ export default async function PropertiesPage() {
     `)
     .order('name')
 
-  const stats = properties?.reduce((acc, p) => {
+  const stats = (properties as any[])?.reduce((acc, p) => {
     const units  = p.units || []
     const occ    = units.filter((u: any) => u.status === 'occupied').length
     const rent   = units.filter((u: any) => u.status === 'occupied').reduce((s: number, u: any) => s + Number(u.rent_amount), 0)
@@ -64,7 +64,7 @@ export default async function PropertiesPage() {
               </tr>
             </thead>
             <tbody>
-              {properties?.map(p => {
+              {(properties as any[])?.map((p: any) => {
                 const units  = p.units || []
                 const occ    = units.filter((u: any) => u.status === 'occupied').length
                 const pct    = units.length ? Math.round((occ / units.length) * 100) : 0

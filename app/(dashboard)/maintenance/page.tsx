@@ -38,11 +38,11 @@ export default async function MaintenancePage() {
     .order('priority', { ascending: true })
     .order('created_at', { ascending: false })
 
-  const open      = tickets?.filter(t => t.status === 'open').length || 0
-  const inProg    = tickets?.filter(t => t.status === 'in_progress').length || 0
-  const urgent    = tickets?.filter(t => t.priority === 'urgent' && !['completed','closed'].includes(t.status)).length || 0
-  const completed = tickets?.filter(t => t.status === 'completed').length || 0
-  const ytdCost   = tickets?.filter(t => t.actual_cost).reduce((s, t) => s + Number(t.actual_cost), 0) || 0
+  const open      = (tickets as any[])?.filter((t: any) => t.status === 'open').length || 0
+  const inProg    = (tickets as any[])?.filter((t: any) => t.status === 'in_progress').length || 0
+  const urgent    = (tickets as any[])?.filter((t: any) => t.priority === 'urgent' && !['completed','closed'].includes(t.status)).length || 0
+  const completed = (tickets as any[])?.filter((t: any) => t.status === 'completed').length || 0
+  const ytdCost   = (tickets as any[])?.filter((t: any) => t.actual_cost).reduce((s, t) => s + Number(t.actual_cost), 0) || 0
 
   return (
     <>
@@ -81,7 +81,7 @@ export default async function MaintenancePage() {
               </tr>
             </thead>
             <tbody>
-              {tickets?.map(t => {
+              {(tickets as any[])?.map((t: any) => {
                 const ps  = PRIORITY_STYLE[t.priority] || PRIORITY_STYLE.medium
                 const ss  = STATUS_STYLE[t.status]     || STATUS_STYLE.open
                 const overdue = t.due_date && new Date(t.due_date) < new Date() && !['completed','closed'].includes(t.status)

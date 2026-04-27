@@ -29,7 +29,7 @@ export default async function TenantsPage() {
     return { label: 'Active', color: '#15803d', bg: '#f0fdf4', border: '#bbf7d0' }
   }
 
-  const expiring = leases?.filter(l => {
+  const expiring = (leases as any[])?.filter((l: any) => {
     if (!l.end_date) return false
     const d = new Date(l.end_date)
     return d >= new Date(today) && d <= new Date(in60)
@@ -60,7 +60,7 @@ export default async function TenantsPage() {
               </tr>
             </thead>
             <tbody>
-              {leases?.map(lease => {
+              {(leases as any[])?.map((lease: any) => {
                 const t  = lease.tenant
                 const st = leaseStatus(lease)
                 const ini = ((t.first_name[0]||'') + (t.last_name[0]||'')).toUpperCase()

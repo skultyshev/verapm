@@ -27,9 +27,9 @@ export default async function PaymentsPage() {
       .eq('status', 'active'),
   ])
 
-  const totalExpected  = leases?.reduce((s, l) => s + Number(l.rent_amount), 0) || 0
-  const totalCollected = payments?.filter(p => p.type === 'rent').reduce((s, p) => s + Number(p.amount), 0) || 0
-  const totalLateFees  = payments?.filter(p => p.type === 'late_fee').reduce((s, p) => s + Number(p.amount), 0) || 0
+  const totalExpected  = (leases as any[])?.reduce((s, l) => s + Number(l.rent_amount), 0) || 0
+  const totalCollected = (payments as any[])?.filter((p: any) => p.type === 'rent').reduce((s, p) => s + Number(p.amount), 0) || 0
+  const totalLateFees  = (payments as any[])?.filter((p: any) => p.type === 'late_fee').reduce((s, p) => s + Number(p.amount), 0) || 0
   const collectionRate = totalExpected > 0 ? Math.round((totalCollected / totalExpected) * 100) : 0
 
   const methodColors: Record<string, { bg: string; color: string; border: string }> = {
@@ -83,7 +83,7 @@ export default async function PaymentsPage() {
               </tr>
             </thead>
             <tbody>
-              {payments?.map(p => {
+              {(payments as any[])?.map((p: any) => {
                 const mc = methodColors[p.method] || methodColors.other
                 return (
                   <tr key={p.id} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
